@@ -25,13 +25,15 @@ class Products(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createProduct(@RequestBody productDetails: ProductDetails): ResponseEntity<ProductId> {
+    fun createProduct(@RequestBody json: String): ResponseEntity<ProductId> {
+        val productDetails = ProductDetails.fromJson(json)
         ProductValidator.validate(productDetails)
         val newProduct = Product(
             id = productRepository.count() + 1,
-            name = productDetails.name as String,
-            type = ProductType.valueOf(productDetails.type as String),
-            inventory = productDetails.inventory as Int
+            name = productDetails.name,
+            type = ProductType.valueOf(productDetails.type),
+            inventory = productDetails.inventory,
+            cost = productDetails.cost
         )
         productRepository.save(newProduct)
         return ResponseEntity.status(HttpStatus.CREATED).body(ProductId(id = newProduct.id))

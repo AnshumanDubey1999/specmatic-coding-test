@@ -83,6 +83,11 @@ components:
           type: integer
           minimum: 1
           maximum: 9999
+        cost:
+          type: number
+          format: float
+          description: The cost of the product, with up to two decimal points
+          example: 19.99
       required:
         - name
         - type
